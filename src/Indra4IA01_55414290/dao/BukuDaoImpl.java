@@ -9,77 +9,39 @@ import Indra4IA01_55414290.model.Buku;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author suryaatmaja14290
  */
+@Repository
 public class BukuDaoImpl implements BukuDao {
     
-    private final SessionFactory sessionFactory;
-    
-    public BukuDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    @Autowired
+    private SessionFactory sessionFactory;
     
     @Override
     public void saveBuku(Buku buku) {
-        Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
-            session.save(buku);
-            session.getTransaction().commit();
-        } catch(Exception e) {
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
-        }
+        sessionFactory.getCurrentSession().save(buku);
     }
     
     @Override
     public List<Buku> getDaftarBuku() {
-        Session session = sessionFactory.openSession();
-        
-        try {
-            session.beginTransaction();
-            List<Buku> daftarBuku;
-            daftarBuku = session.createCriteria(Buku.class).list();
-            session.getTransaction().commit();
-            return daftarBuku;
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-            return null;
-        } finally {
-            session.close();
-        }
+        return sessionFactory.getCurrentSession()
+                .createCriteria(Buku.class)
+                .list();
     }
     
     @Override
     public void updateBuku(Buku buku) {
-        Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
-            session.update(buku);
-            session.getTransaction().commit();
-        } catch(Exception e) {
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
-        }
+         sessionFactory.getCurrentSession().update(buku);
     }
     
     @Override
     public void deleteBuku(Buku buku) {
-        Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
-            session.delete(buku);
-            session.getTransaction().commit();
-        } catch(Exception e) {
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
-        }
+        sessionFactory.getCurrentSession().delete(buku);
     }
     
 }
