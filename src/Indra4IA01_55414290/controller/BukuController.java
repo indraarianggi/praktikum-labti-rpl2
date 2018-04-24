@@ -5,8 +5,8 @@
  */
 package Indra4IA01_55414290.controller;
 
+import Indra4IA01_55414290.app.App;
 import Indra4IA01_55414290.config.BukuTableModel;
-import Indra4IA01_55414290.config.HibernateUtil;
 import Indra4IA01_55414290.dao.BukuDao;
 import Indra4IA01_55414290.model.Buku;
 import Indra4IA01_55414290.view.BukuView;
@@ -22,14 +22,13 @@ public class BukuController {
     private final BukuView bukuView;
     private BukuTableModel bukuTableModel;
     private List<Buku> daftarBuku;
-    private final BukuDao bukuDao = HibernateUtil.getBukuDao();
     
     public BukuController(BukuView bukuView) {
         this.bukuView = bukuView;
     }
     
     public void tampilData() {
-        daftarBuku = bukuDao.getDaftarBuku();
+        daftarBuku = App.getBukuService().getDaftarBuku();
         bukuTableModel = new BukuTableModel(daftarBuku);
         this.bukuView.getTblBuku().setModel(bukuTableModel);
     }
@@ -44,7 +43,7 @@ public class BukuController {
         buku.setTahun(Integer.parseInt(this.bukuView.getTxtTahun().getText()));
         buku.setHarga(Float.parseFloat(this.bukuView.getTxtHarga().getText()));
         
-        bukuDao.saveBuku(buku);
+        App.getBukuService().saveBuku(buku);
         
         JOptionPane.showMessageDialog(null, "Data berhasil disimpan", "Info",
                 JOptionPane.INFORMATION_MESSAGE);
@@ -61,7 +60,7 @@ public class BukuController {
         buku.setTahun(Integer.parseInt(this.bukuView.getTxtTahun().getText()));
         buku.setHarga(Float.parseFloat(this.bukuView.getTxtHarga().getText()));
         
-        bukuDao.updateBuku(buku);
+        App.getBukuService().updateBuku(buku);
         
         JOptionPane.showMessageDialog(null, "Data berhasil diupdate", "Info",
                 JOptionPane.INFORMATION_MESSAGE);
@@ -113,7 +112,7 @@ public class BukuController {
         buku.setTahun(Integer.parseInt(this.bukuView.getTxtTahun().getText()));
         buku.setHarga(Float.parseFloat(this.bukuView.getTxtHarga().getText()));
         
-        bukuDao.deleteBuku(buku);
+        App.getBukuService().deleteBuku(buku);
         
         JOptionPane.showMessageDialog(null, "Data berhasil dihapus", "Info",
                 JOptionPane.INFORMATION_MESSAGE);
